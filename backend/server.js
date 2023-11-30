@@ -1,5 +1,5 @@
 const express = require('express');
-
+const mongoose = require('mongoose');
 const app = express();
 
 require('dotenv').config();
@@ -23,12 +23,25 @@ app.use((req, res, next) => {
     console.log(`[${formatedDate}] ${req.ip} HTTP/${req.httpVersion} ${req.method} ${req.hostname}${req.path}`)
     next()
 })
+
 port = process.env.PORT || 3000;
 
-const route = require("./routes/workout")
+const workoutRoutes = require("./routes/workout")
 
-app.use(route)
+app.use("/api/workout", workoutRoutes)
 
 app.listen(port, () => {
+
+    const connectToMongoDB = async (uri) => {
+        try{
+            await mongoose.connect(uri);
+            console.log("Connected to MongoDB database")
+        }catch(error){
+            console.log(`Error occured : ${error.message}`);
+        }
+    }
+
+    connectToMongoDB(process.env.MONGO_URI);
+
 	console.log(`Server running on port ${port}`);
 })
