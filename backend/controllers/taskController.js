@@ -9,16 +9,20 @@ const createTaskHandler = async (req, res) => {
         const Task = new taskModel(body);
 
         await Task.save();
+
+        res.status(200).json(body);
+
     }catch(error){
         console.log(`Error occured : ${error.message}`);
         res.status(500).json({ error : error.message });
     }
 }
 
-const getAllTaskHandler = async (req, res) => {
+const getAllTaskHandler = async (_, res) => {
 
     try{
         const tasks = await taskModel.find({}).sort({ createdAt : -1 });
+        console.log(tasks);
         res.json(tasks);
     }catch(error){
         console.error(`Error occured : ${error.message}`);
@@ -64,7 +68,7 @@ const deleteTask = async (req, res) => {
             throw new Error('No such task');
         }
 
-        res.json(task);
+        res.status(200).json(task);
     
     }catch(error){
         console.error(`Error occured : ${error.message}`);

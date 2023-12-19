@@ -9,7 +9,7 @@ const taskSchema = mongoose.Schema({
         type: [String]
     },
     priority: {
-        type: Number,
+        type: String,
         required: true,
     },
     description: {

@@ -1,0 +1,13 @@
+body{
+  background-color: whitesmoke;
+}
+
+.active{
+  color: white;
+  text-decoration: underline 5px;
+  text-underline-offset: 15px;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
