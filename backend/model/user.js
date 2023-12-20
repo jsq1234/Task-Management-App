@@ -14,10 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profile_photo : {
-        type: String,
-        required: true,
-    }
+    // profile_photo : {
+    //     type: String,
+    //     required: true,
+    // }
 });
 
 module.exports = mongoose.model('User', userSchema);
