@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const useSignup = () => {
     const [registered, setRegistered] = useState(null);
@@ -30,7 +30,7 @@ export const useSignup = () => {
 
             localStorage.setItem('user', JSON.stringify(json));
             console.log("Added token to localStorage!");
-            
+
             dispatch({ type: 'LOGIN', payload: json })
             setRegistered(false);
             setLoading(false);

@@ -34,11 +34,11 @@ export default function Signup() {
             </div>
             <div className='flex flex-col gap-2 mb-10'>
                 <label className="ml-2" htmlFor="password">Password</label>
-                <input className='p-4 rounded-xl focus:bg-slate-100' placeholder='password' {...register("password", { required: true })} />
+                <input type="password" className='p-4 rounded-xl focus:bg-slate-100' placeholder='password' {...register("password", { required: true })} />
                 {errors.password && <span className='text-red-600 font-semibold ml-2 -mb-6 flex gap-3 mt-1'><AlertTriangle /> Password is required.</span>}
             </div>
             <button disabled={loading} className='border-2 border-black w-[100%] p-2 rounded-2xl bg-black text-white font-semibold focus:shadow-md focus:shadow-black hover:shadow-md hover:shadow-black' type="submit">
-                { loading ? "Signing Up..." : "Sign Up" }
+                {loading ? "Signing Up..." : "Sign Up"}
             </button>
 
         </form>
