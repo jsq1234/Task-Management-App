@@ -8,6 +8,10 @@ const {
     updateTask,
 } = require('../controllers/taskController');
 
+const requireAuth = require('../middleware/requireAuth');
+
+router.use(requireAuth);
+
 router.get("/", getAllTaskHandler);
 router.get("/:id", getTaskByID);
 router.post("/", createTaskHandler);
