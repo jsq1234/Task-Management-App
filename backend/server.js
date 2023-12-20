@@ -28,22 +28,24 @@ app.use((req, res, next) => {
 
 port = process.env.PORT || 3000;
 
-const workoutRoutes = require("./routes/workout")
+const workoutRoutes = require("./routes/workout");
+const userRoutes = require("./routes/user");
 
 app.use("/api/workout", workoutRoutes)
+app.use("/api/user", userRoutes)
 
 app.listen(port, () => {
 
     const connectToMongoDB = async (uri) => {
-        try{
+        try {
             await mongoose.connect(uri);
             console.log("Connected to MongoDB database")
-        }catch(error){
+        } catch (error) {
             console.log(`Error occured : ${error.message}`);
         }
     }
 
     connectToMongoDB(process.env.MONGO_URI);
 
-	console.log(`Server running on port ${port}`);
+    console.log(`Server running on port ${port}`);
 })
