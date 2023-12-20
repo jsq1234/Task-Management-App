@@ -4,6 +4,8 @@ import { Trash } from 'lucide-react';
 import Spinner from './Spinner';
 import { useTaskContext } from '../hooks/useTaskContext';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function NoTaskCreated() {
     return (
@@ -20,33 +22,55 @@ function LoadingTasks() {
 export default function Tasks() {
     const [loading, setLoading] = useState(true);
     const { tasks, dispatch } = useTaskContext();
+    const { user } = useAuthContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const res = await fetch("http://localhost:8000/api/workout")
+                console.log("Fetching!...")
+                const res = await fetch("http://localhost:8000/api/workout", {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                })
                 const body = await res.json();
-                console.log(body);
+
+                if (!res.ok) {
+                    throw new Error(body.Error);
+                }
                 dispatch({ type: 'SET_TASKS', payload: body })
             } catch (e) {
                 console.log(`Error : ${e.message}`);
             } finally {
                 setLoading(false);
-                
             }
         }
-        fetchTasks();
-    }, [])
+        if (user) {
+            fetchTasks();
+        }else{
+            navigate("/login");
+        }
+    }, [dispatch, user])
 
     const deleteTask = async (id) => {
-        const res = await fetch(`http://localhost:8000/api/workout/${id}`,{
-            method: "DELETE"
+
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+        const res = await fetch(`http://localhost:8000/api/workout/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${user.token}`,
+            }
         });
+
         const json = await res.json();
-        if(!res.ok){
+        if (!res.ok) {
             throw new Error(`Error in fetch (DELETE)`)
-        }else{
-            console.log(json);
+        } else {
             dispatch({ type: "DELETE_TASK", payload: id })
         }
     }
@@ -62,10 +86,10 @@ export default function Tasks() {
                                     {completed && <img src={tickLogo} width={24} height={24} alt='tick' className='absolute top-1.5 left-1' />}
                                     <div className='flex gap-4 justify-between items-center'>
                                         <h1 className='flex-1 text-3xl font-semibold'>{title}</h1>
-                                        { priority == 'high' && <p className='text-xl text-red-700 font-semibold'>High</p>}
-                                        { priority == 'medium' && <p className='text-xl text-yellow-600 font-semibold'>Medium</p>}
-                                        { priority == 'low' && <p className='text-xl text-green-400 font-semibold'>Low</p>}
-                                        <Trash className='cursor-pointer group-hover:text-black group-hover:bg-white group-hover:rounded-3xl w-[40px] h-[40px] p-2' onClick={() => deleteTask(_id)}/>
+                                        {priority == 'high' && <p className='text-xl text-red-700 font-semibold'>High</p>}
+                                        {priority == 'medium' && <p className='text-xl text-yellow-600 font-semibold'>Medium</p>}
+                                        {priority == 'low' && <p className='text-xl text-green-400 font-semibold'>Low</p>}
+                                        <Trash className='cursor-pointer group-hover:text-black group-hover:bg-white group-hover:rounded-3xl w-[40px] h-[40px] p-2' onClick={() => deleteTask(_id)} />
                                     </div>
                                     <p className='text-xl mt-2'>{description}</p>
                                     <div className='border border-black mt-2'></div>

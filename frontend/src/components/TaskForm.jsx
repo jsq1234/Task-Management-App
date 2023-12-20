@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useTaskContext } from '../hooks/useTaskContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function TaskForm() {
     const [priority, setPriority] = useState('high');
@@ -10,13 +11,20 @@ export default function TaskForm() {
 
     const { dispatch } = useTaskContext();
 
+    const { user } = useAuthContext();
+
     const submitTask = async (event) => {
         event.preventDefault();
+
+        if (!user) {
+            return
+        }
 
         const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${user.token}`,
             },
             body: JSON.stringify({
                 title,

@@ -23,6 +23,7 @@ export default function NavBar() {
                 {!user && <NavLink to="/login">
                     <li className='p-2 font-bold'> Log In </li>
                 </NavLink>}
+                {user && <h1>{user.username}</h1>}
                 {user && <button onClick={logout} className='p-2 font-bold'>Logout</button>}
             </ul>
         </nav>
