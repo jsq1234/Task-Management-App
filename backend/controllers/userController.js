@@ -58,7 +58,8 @@ const signupUser = async (req, res) => {
         const token = createToken(user._id);
 
         // send the JWT token so that the frontend can use it.
-        res.status(200).json({ user_name, token });
+        res.status(200).json({ email, token });
+
     } catch (e) {
         console.log(`Error : ${e.message}`);
         res.status(500).json({ Error: e.message });

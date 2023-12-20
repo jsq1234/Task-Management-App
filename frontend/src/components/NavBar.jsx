@@ -12,6 +12,12 @@ export default function NavBar() {
                 <NavLink to="/about">
                     <li className='p-2 font-bold'> About </li>
                 </NavLink>
+                <NavLink to="/signup">
+                    <li className='p-2 font-bold'> Sign Up </li>
+                </NavLink>
+                <NavLink to="/login">
+                    <li className='p-2 font-bold'> Log In </li>
+                </NavLink>
             </ul>
         </nav>
     )
